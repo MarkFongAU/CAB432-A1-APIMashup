@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/css/favicon.ico" type="image/x-icon">
+    <title>Discover Restaurants</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+
+    <!-- Custom styles for this template -->
+    <link rel='stylesheet' href='/css/info.css'/>
+
+</head>
+<body id="page-top">
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="/">Discover Restaurants!</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="#restaurantDetails">Restaurant Details</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="/info/back">Back</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<header class="bg-success text-white" id="restaurantDetails">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="container text-center">
+                    <h5><%= restaurant.name %></h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mx-auto">
+                <input type="button" name="type" id="offRestaurantDirection" class="controls" value="Remove Direction">
+
+                <div id="mode-selector" class="controls">
+                    <input type="radio" name="type" id="changemode-walking">
+                    <label for="changemode-walking">Walking</label>
+
+                    <input type="radio" name="type" id="changemode-transit">
+                    <label for="changemode-transit">Transit</label>
+
+                    <input type="radio" name="type" id="changemode-driving">
+                    <label for="changemode-driving">Driving</label>
+                </div>
+
+                <div id="map"></div>
+            </div>
+            <div class="col-lg-6 mx-auto">
+                <!-- Restaurant Details -->
+                <div class="row">
+                    <% if(restaurant){ %>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="card bg-success">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            <a href="#">
+                                                <img src="<%= restaurant.thumbnail %>" style="border-radius: 5px"
+                                                     alt="No Restaurant Image" onerror="this.onerror=null;this.src='http://placehold.it/200x100?text=No Image';">
+                                            </a>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <a href="<%= restaurant.url %>"><h4 class="card-title text-danger">
+                                                            <b><%= restaurant.name %></b></h4></a>
+                                                </div>
+                                                <div class="row">
+                                                    <h6 class="card-text"><b><%= restaurant.locationLocality %></b></h6>
+                                                </div>
+                                                <div class="row">
+                                                    <p class="card-text text-muted"><%= restaurant.locationAddress %></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            <p class="card-text text-muted">CUISINES:</p>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8">
+                                            <p class="card-text"><%= restaurant.cuisine %></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            <p class="card-text text-muted">COST FOR TWO:</p>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8">
+                                            <p class="card-text"><%= restaurant.currency %> <%= restaurant.cost %>
+                                                (local currency)</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            <p class="card-text text-muted">RATING:</p>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8">
+                                            <p class="card-text"
+                                               style="color: #<%= restaurant.userRatingColor %>"><%= restaurant.userRatingAggregate %>
+                                                /5, <%= restaurant.userRatingText %>
+                                                <small class="text-muted">[Based
+                                                    on <%= restaurant.userRatingVotes %> votes]
+                                                </small>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            <p class="card-text text-muted">DELIVERY:</p>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8">
+                                            <p class="card-text"><%= restaurant.delivery %></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            <p class="card-text text-muted">BOOKING:</p>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8">
+                                            <p class="card-text"><%= restaurant.booking %></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            <p class="card-text text-muted">PHOTOS:</p>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8">
+                                            <a href="<%= restaurant.photoUrl %>"><p class="card-text">Photos</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            <p class="card-text text-muted">MENU:</p>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8">
+                                            <a href="<%= restaurant.menuUrl %>"><p class="card-text">Menu</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            <p class="card-text text-muted">EVENTS:</p>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8">
+                                            <a href="<%= restaurant.eventsUrl %>"><p class="card-text">
+                                                    Events</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+                <!-- Weather Details -->
+                <div class="row text-dark">
+                    <% if(weather){ %>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="card bg-primary">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="container">
+                                            <p class="card-text">Current Weather: <%= weather.name %>
+                                                <small class="text-muted">[<%= weather.description %>]</small>
+                                                <img src="<%= weather.icon %>" id="currentWeatherIcon"
+                                                     alt="Weather Image">
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-7 col-md-7 col-sm-7">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <p class="card-text">Temperature: <%= weather.temperature %> °C
+                                                        <small class="text-muted">
+                                                            Min: <%= weather.temperatureMin %>
+                                                        </small>
+                                                        <small class="text-muted">
+                                                            Max: <%= weather.temperatureMax %>
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                                <div class="row">
+                                                    <p class="card-text">Pressure: <%= weather.pressure %> hpa</p>
+                                                </div>
+                                                <div class="row">
+                                                    <p class="card-text">Humidity: <%= weather.humidity %> %</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-md-5 col-sm-5">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <p class="card-text">Wind Speed: <%= weather.windSpeed %> m/s</p>
+                                                </div>
+                                                <div class="row">
+                                                    <p class="card-text">Wind Degree: <%= weather.windDegree %> °</p>
+                                                </div>
+                                                <div class="row">
+                                                    <p class="card-text">Location: <%= weather.location %></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-5 bg-dark">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; YeeChen Fong 2017</p>
+    </div>
+    <!-- /.container -->
+</footer>
+
+<!-- Bootstrap Core JavaScript, JQuery, Popper -->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/popper/popper.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="/vendor/jquery-ui/jquery-ui.min.js"></script>
+
+<!-- Custom JavaScript for this theme -->
+<script src="/js/result.js"></script>
+<script>
+    // This example requires the Places library. Include the libraries=places
+    // parameter when you first load the API. For example:
+    // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+    var map, currentInfoWindow, restaurantInfoWindow, currentLocation, restaurantLocation, directionsDisplay;
+
+    function initMap() {
+        var lat = parseFloat("<%= restaurant.locationLatitude %>");
+        var lng = parseFloat("<%= restaurant.locationLongitude %>");
+        console.log("Restaurant LatLon: ", lat, lng);
+
+        map = new google.maps.Map(document.getElementById('map'), {
+            mapTypeControl: true,
+            center: {lat: lat, lng: lng},
+            // center: {lat: -34.397, lng: 150.644},
+            zoom: 13
+        });
+        currentInfoWindow = new google.maps.InfoWindow;
+
+        // Restaurant Markers
+        setMarkers(map);
+
+        // Try HTML5 geolocation. ASYNC
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+
+                currentLocation = new google.maps.Marker({
+                    position: pos,
+                    map: map,
+                    title: 'You'
+                });
+                console.log("Current Location: ", currentLocation.position.lat(), currentLocation.position.lng());
+
+                // Place Autocomplete and Directions
+                new AutocompleteDirectionsHandler(map);
+
+            }, function () {
+                handleLocationError(true, currentInfoWindow, map.getCenter());
+            });
+        } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, currentInfoWindow, map.getCenter());
+        }
+    }
+
+    /**
+     * Geolocation Marker
+     */
+    function handleLocationError(browserHasGeolocation, currentInfoWindow, pos) {
+        currentInfoWindow.setPosition(pos);
+        currentInfoWindow.setContent(browserHasGeolocation ?
+            'Error: The Geolocation service failed.' :
+            'Error: Your browser doesn\'t support geolocation.');
+        currentInfoWindow.open(map);
+    }
+
+    /**
+     * Restaurant Markers
+     */
+    function setMarkers(map) {
+        // Adds markers to the map.
+
+        // Marker sizes are expressed as a Size of X,Y where the origin of the image
+        // (0,0) is located in the top left of the image.
+
+        // Origins, anchor positions and coordinates of the marker increase in the X
+        // direction to the right and in the Y direction down.
+        var image = {
+            url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+            // This marker is 32 pixels wide by 32 pixels high.
+            size: new google.maps.Size(32, 32),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(16, 32)
+        };
+        // Shapes define the clickable region of the icon. The type defines an HTML
+        // <area> element 'poly' which traces out a polygon as a series of X,Y points.
+        // The final coordinate closes the poly by connecting to the first coordinate.
+        var shape = {
+            coords: [1, 1, 1, 28, 31, 28, 31, 1], //Top left, Bottom left, Bottom right, Top right
+            type: 'poly'
+        };
+
+        <% if(restaurant){ %>
+        var contentString = '<b><%= restaurant.name %></b>' + '<br/>' + '<%= restaurant.locationLocality %>';
+
+        restaurantInfoWindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+
+        var lat = parseFloat("<%= restaurant.locationLatitude %>");
+        var lng = parseFloat("<%= restaurant.locationLongitude %>");
+        var title = "<%= restaurant.name %>";
+        var zindex = parseFloat("1");
+
+        var marker = new google.maps.Marker({
+            position: {lat: lat, lng: lng},
+            map: map,
+            icon: image,
+            shape: shape,
+            title: title,
+            zIndex: zindex
+        });
+        restaurantLocation = marker;
+
+        console.log("Restaurant location", restaurantLocation.position.lat(), restaurantLocation.position.lng());
+
+        restaurantInfoWindow.open(map, marker);
+
+        google.maps.event.addListener(marker, 'click', (function (marker, restaurantInfoWindow) {
+            return function () {
+                restaurantInfoWindow.open(map, marker);
+                google.maps.event.addListener(map, 'click', function () {
+                    restaurantInfoWindow.close();
+                });
+            };
+        })(marker, restaurantInfoWindow));
+
+        <% } %>
+    }
+
+    /**
+     * Place Autocomplete and Directions
+     * @constructor
+     */
+    function AutocompleteDirectionsHandler(map) {
+        this.map = map;
+        this.originPlaceId = null;
+        this.destinationPlaceId = null;
+        this.travelMode = 'WALKING';
+
+        var offRestaurantDirection = document.getElementById('offRestaurantDirection');
+        var modeSelector = document.getElementById('mode-selector');
+        this.directionsService = new google.maps.DirectionsService;
+        directionsDisplay = new google.maps.DirectionsRenderer;
+        directionsDisplay.setMap(map);
+
+        this.start = new google.maps.LatLng(currentLocation.position.lat(), currentLocation.position.lng());
+        this.end = new google.maps.LatLng(restaurantLocation.position.lat(), restaurantLocation.position.lng());
+
+        this.setupButtonClickListener('offRestaurantDirection');
+        this.setupRadioClickListener('changemode-walking', 'WALKING');
+        this.setupRadioClickListener('changemode-transit', 'TRANSIT');
+        this.setupRadioClickListener('changemode-driving', 'DRIVING');
+
+        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(modeSelector);
+        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(offRestaurantDirection);
+
+    }
+
+    // Sets a listener on a radio button to change the filter type on Places
+    // Autocomplete.
+    AutocompleteDirectionsHandler.prototype.setupRadioClickListener = function (id, mode) {
+        var radioButton = document.getElementById(id);
+        var me = this;
+        radioButton.addEventListener('click', function () {
+            me.travelMode = mode;
+            me.route();
+        });
+    };
+
+    AutocompleteDirectionsHandler.prototype.setupButtonClickListener = function (id) {
+        var button = document.getElementById(id);
+        var me = this;
+
+        button.addEventListener('click', function () {
+            directionsDisplay.setDirections({routes: []});
+        });
+    };
+
+    AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function (autocomplete, mode) {
+        var me = this;
+        autocomplete.bindTo('bounds', this.map);
+        autocomplete.addListener('place_changed', function () {
+            var place = autocomplete.getPlace();
+            if (!place.place_id) {
+                window.alert("Please select an option from the dropdown list.");
+                return;
+            }
+            if (mode === 'ORIG') {
+                me.originPlaceId = place.place_id;
+            } else {
+                me.destinationPlaceId = place.place_id;
+            }
+            me.route();
+        });
+
+    };
+
+    AutocompleteDirectionsHandler.prototype.route = function () {
+        var me = this;
+
+        this.directionsService.route({
+            //origin: {'placeId': this.originPlaceId},
+            origin: this.start,
+            //destination: {'placeId': this.destinationPlaceId},
+            destination: this.end,
+            travelMode: this.travelMode
+        }, function (response, status) {
+            if (status === 'OK') {
+                directionsDisplay.setDirections(response);
+            } else {
+                window.alert('Directions request failed due to ' + status + ' and you are currently not in the Country.');
+            }
+        });
+    };
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTEZLqkXT72SUUCj0GJkpLPG_IwxP2lbM&libraries=places&callback=initMap">
+</script>
+
+</body>
+</html>

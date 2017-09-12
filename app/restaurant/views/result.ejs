@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/css/favicon.ico" type="image/x-icon">
+    <title>Discover Restaurants</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+
+    <!-- Custom styles for this template -->
+    <link rel='stylesheet' href='/css/result.css'/>
+
+</head>
+<body id="page-top">
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="/">Discover Restaurants!</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="#googleMap">Map</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="#weather">Weather</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="#restaurant">Restaurant</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<header class="bg-success text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="container text-center">
+                    <h5>Search result list: <%= restaurantID.length%> restaurants and food stalls in <%= weather.location %></h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section id="googleMap">
+    <input id="origin-input" class="controls" type="text"
+           placeholder="Enter an origin location">
+
+    <input id="destination-input" class="controls" type="text"
+           placeholder="Enter a destination location">
+
+    <div id="mode-selector" class="controls">
+        <input type="radio" name="type" id="changemode-walking" checked="checked">
+        <label for="changemode-walking">Walking</label>
+
+        <input type="radio" name="type" id="changemode-transit">
+        <label for="changemode-transit">Transit</label>
+
+        <input type="radio" name="type" id="changemode-driving">
+        <label for="changemode-driving">Driving</label>
+    </div>
+    <div id="map"></div>
+</section>
+
+<section id="weather" class="bg-success text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <!-- City Location Details -->
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="row">
+                        <h2>Current City Weather: <%= weather.location %></h2>
+                    </div>
+                </div>
+
+                <!-- Weather Details -->
+                <div class="row text-dark">
+                    <% if(weather){ %>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="card bg-primary">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="container">
+                                            <p class="card-text">Current Weather: <%= weather.name %>
+                                                <small class="text-muted">[<%= weather.description %>]</small>
+                                                <img src="<%= weather.icon %>" id="currentWeatherIcon"
+                                                     alt="Weather Image">
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-7 col-md-7 col-sm-7">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <p class="card-text">Temperature: <%= weather.temperature %> °C
+                                                        <small class="text-muted">
+                                                            Min: <%= weather.temperatureMin %>
+                                                        </small>
+                                                        <small class="text-muted">
+                                                            Max: <%= weather.temperatureMax %>
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                                <div class="row">
+                                                    <p class="card-text">Pressure: <%= weather.pressure %> hpa</p>
+                                                </div>
+                                                <div class="row">
+                                                    <p class="card-text">Humidity: <%= weather.humidity %> %</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-md-5 col-sm-5">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <p class="card-text">Wind Speed: <%= weather.windSpeed %> m/s</p>
+                                                </div>
+                                                <div class="row">
+                                                    <p class="card-text">Wind Degree: <%= weather.windDegree %> °</p>
+                                                </div>
+                                                <div class="row">
+                                                    <p class="card-text">Location: <%= weather.location %></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="restaurant">
+    <div class="container">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="row">
+                <h2>Result List:</h2>
+            </div>
+        </div>
+        <div class="row">
+            <% if(restaurantID){ %>
+            <% for(var i = 0; i < restaurantID.length; i++){ %>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="card">
+                    <a href="/info/<%= restaurantID[i] %>">
+                        <img src="<%= restaurantThumbnail[i] %>" alt="No restaurant Image" onerror="this.onerror=null;this.src='http://placehold.it/250x100?text=No Image';">
+                    </a>
+                    <div class="card-body">
+                        <h6 class="card-title"><a href="/info/<%= restaurantID[i] %>/"><%= restaurantName[i] %></a></h6>
+                        <p class="card-text"><%= restaurantLocationLocality[i] %></p>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+            <% } %>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-5 bg-dark">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; YeeChen Fong 2017</p>
+    </div>
+    <!-- /.container -->
+</footer>
+
+<!-- Bootstrap Core JavaScript, JQuery, Popper -->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/popper/popper.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="/vendor/jquery-ui/jquery-ui.min.js"></script>
+
+<!-- Custom JavaScript for this theme -->
+<script src="/js/result.js"></script>
+<script>
+    // This example requires the Places library. Include the libraries=places
+    // parameter when you first load the API. For example:
+    // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+    var map, currentInfoWindow, currentLocation;
+
+    function initMap() {
+        var lat = parseFloat("<%= location.cityLat %>");
+        var lng = parseFloat("<%= location.cityLng %>");
+
+        map = new google.maps.Map(document.getElementById('map'), {
+            mapTypeControl: true,
+            center: {lat: lat, lng: lng},
+            // center: {lat: -34.397, lng: 150.644},
+            zoom: 13
+        });
+        currentInfoWindow = new google.maps.InfoWindow;
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+
+                currentLocation = new google.maps.Marker({
+                    position: pos,
+                    map: map,
+                    title: 'You'
+                });
+
+            }, function () {
+                handleLocationError(true, currentInfoWindow, map.getCenter());
+            });
+        } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, currentInfoWindow, map.getCenter());
+        }
+        // Restaurant Markers
+        setMarkers(map);
+
+        // Place Autocomplete and Directions
+        new AutocompleteDirectionsHandler(map);
+
+    }
+
+    /**
+     * Geolocation Marker
+     */
+    function handleLocationError(browserHasGeolocation, currentInfoWindow, pos) {
+        currentInfoWindow.setPosition(pos);
+        currentInfoWindow.setContent(browserHasGeolocation ?
+            'Error: The Geolocation service failed.' :
+            'Error: Your browser doesn\'t support geolocation.');
+        currentInfoWindow.open(map);
+    }
+
+    /**
+     * Restaurant Markers
+     */
+    function setMarkers(map) {
+        // Adds markers to the map.
+
+        // Marker sizes are expressed as a Size of X,Y where the origin of the image
+        // (0,0) is located in the top left of the image.
+
+        // Origins, anchor positions and coordinates of the marker increase in the X
+        // direction to the right and in the Y direction down.
+        var image = {
+            url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+            // This marker is 32 pixels wide by 32 pixels high.
+            size: new google.maps.Size(32, 32),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(16, 32)
+        };
+        // Shapes define the clickable region of the icon. The type defines an HTML
+        // <area> element 'poly' which traces out a polygon as a series of X,Y points.
+        // The final coordinate closes the poly by connecting to the first coordinate.
+        var shape = {
+            coords: [1, 1, 1, 28, 31, 28, 31, 1], //Top left, Bottom left, Bottom right, Top right
+            type: 'poly'
+        };
+
+        <% if(restaurantID){ %>
+        <% for (var i = 0; i < restaurantID.length; i++) { %>
+
+        var contentString = '<a href="/info/<%= restaurantID[i] %>"<b><%= restaurantName[i] %></b></a>' + '<br/>' + '<%= restaurantLocationLocality[i] %>';
+
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+
+        var lat = parseFloat("<%= restaurantLocationLatitude[i] %>");
+        var lng = parseFloat("<%= restaurantLocationLongitude[i] %>");
+        var title = "<%= restaurantName[i] %>";
+        var zindex = parseFloat("<%= i %>");
+
+        var marker = new google.maps.Marker({
+            position: {lat: lat, lng: lng},
+            map: map,
+            icon: image,
+            shape: shape,
+            title: title,
+            zIndex: zindex
+        });
+
+        google.maps.event.addListener(marker,'click', (function(marker, infowindow){
+            return function() {
+                infowindow.open(map,marker);
+                google.maps.event.addListener(map,'click', function(){
+                    infowindow.close();
+                });
+            };
+        })(marker, infowindow));
+        <% } %>
+        <% } %>
+    }
+
+    /**
+     * Place Autocomplete and Directions
+     * @constructor
+     */
+    function AutocompleteDirectionsHandler(map) {
+        this.map = map;
+        this.originPlaceId = null;
+        this.destinationPlaceId = null;
+        this.travelMode = 'WALKING';
+        var originInput = document.getElementById('origin-input');
+        var destinationInput = document.getElementById('destination-input');
+        var modeSelector = document.getElementById('mode-selector');
+        this.directionsService = new google.maps.DirectionsService;
+        this.directionsDisplay = new google.maps.DirectionsRenderer;
+        this.directionsDisplay.setMap(map);
+
+        var originAutocomplete = new google.maps.places.Autocomplete(
+            originInput, {placeIdOnly: true});
+        var destinationAutocomplete = new google.maps.places.Autocomplete(
+            destinationInput, {placeIdOnly: true});
+
+        this.setupClickListener('changemode-walking', 'WALKING');
+        this.setupClickListener('changemode-transit', 'TRANSIT');
+        this.setupClickListener('changemode-driving', 'DRIVING');
+
+        this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
+        this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
+
+        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originInput);
+        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(destinationInput);
+        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(modeSelector);
+    }
+
+    // Sets a listener on a radio button to change the filter type on Places
+    // Autocomplete.
+    AutocompleteDirectionsHandler.prototype.setupClickListener = function (id, mode) {
+        var radioButton = document.getElementById(id);
+        var me = this;
+        radioButton.addEventListener('click', function () {
+            me.travelMode = mode;
+            me.route();
+        });
+    };
+
+    AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function (autocomplete, mode) {
+        var me = this;
+        autocomplete.bindTo('bounds', this.map);
+        autocomplete.addListener('place_changed', function () {
+            var place = autocomplete.getPlace();
+            if (!place.place_id) {
+                window.alert("Please select an option from the dropdown list.");
+                return;
+            }
+            if (mode === 'ORIG') {
+                me.originPlaceId = place.place_id;
+            } else {
+                me.destinationPlaceId = place.place_id;
+            }
+            me.route();
+        });
+
+    };
+
+    AutocompleteDirectionsHandler.prototype.route = function () {
+        if (!this.originPlaceId || !this.destinationPlaceId) {
+            return;
+        }
+        var me = this;
+
+        this.directionsService.route({
+            origin: {'placeId': this.originPlaceId},
+            destination: {'placeId': this.destinationPlaceId},
+            travelMode: this.travelMode
+        }, function (response, status) {
+            if (status === 'OK') {
+                me.directionsDisplay.setDirections(response);
+            } else {
+                window.alert('Directions request failed due to ' + status);
+            }
+        });
+    };
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTEZLqkXT72SUUCj0GJkpLPG_IwxP2lbM&libraries=places&callback=initMap">
+</script>
+
+</body>
+</html>
