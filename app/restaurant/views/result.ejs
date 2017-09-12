@@ -28,7 +28,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="#googleMap">Map</a>
+                    <a class="nav-link js-scroll-trigger" href="#page-top">Map</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link js-scroll-trigger" href="#weather">Weather</a>
@@ -159,11 +159,20 @@
             <div class="col-lg-3 col-md-4 col-sm-6">
                 <div class="card">
                     <a href="/info/<%= restaurantID[i] %>">
-                        <img src="<%= restaurantThumbnail[i] %>" alt="No restaurant Image" onerror="this.onerror=null;this.src='http://placehold.it/250x100?text=No Image';">
+                        <img src="<%= restaurantThumbnail[i] %>" alt="No restaurant Image" style="height: 100px; width: 100%"  onerror="this.onerror=null;this.src='http://placehold.it/250x100?text=No Image';">
                     </a>
                     <div class="card-body">
-                        <h6 class="card-title"><a href="/info/<%= restaurantID[i] %>/"><%= restaurantName[i] %></a></h6>
-                        <p class="card-text"><%= restaurantLocationLocality[i] %></p>
+                        <div class="container">
+                            <div class="row">
+                                <h6 class="card-title"><a href="/info/<%= restaurantID[i] %>/"><%= restaurantName[i] %></a></h6>
+                            </div>
+                            <div class="row">
+                                <p class="card-text"><small class="text-muted"><%= restaurantCuisine[i] %></small></p>
+                            </div>
+                            <div class="row">
+                                <p class="card-text"><small class="text-black"><%= restaurantLocationLocality[i] %></small></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -281,7 +290,10 @@
         <% if(restaurantID){ %>
         <% for (var i = 0; i < restaurantID.length; i++) { %>
 
-        var contentString = '<a href="/info/<%= restaurantID[i] %>"<b><%= restaurantName[i] %></b></a>' + '<br/>' + '<%= restaurantLocationLocality[i] %>';
+        var contentString = '<a href="/info/<%= restaurantID[i] %>"><img src="<%= restaurantThumbnail[i] %>" alt="No restaurant Image" style="height: 100px; width: 200px" onerror="this.onerror=null;this.src=\'http://placehold.it/250x100?text=No Image\';"></a>' +
+            '<br/>' + '<b><a href="/info/<%= restaurantID[i] %>"><%= restaurantName[i] %></a></b>' +
+            '<br/>' + '<b class="text-muted"><%= restaurantCuisine[i] %></b>' +
+            '<br/>' + '<%= restaurantLocationLocality[i] %>';
 
         var infowindow = new google.maps.InfoWindow({
             content: contentString
