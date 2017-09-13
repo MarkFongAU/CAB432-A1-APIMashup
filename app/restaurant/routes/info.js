@@ -20,9 +20,109 @@ router.get('/back', function (clientReq, clientRes) {
     // clientRes.redirect('back');
 });
 
+// GET restaurant LatLon for the map
+router.get('/getMap', function (clientReq, clientRes) {
+    restaurantID = clientReq.query.restaurantID;
+    console.log("Get map details");
+    console.log(restaurantID);
+
+    // /info/16590792
+    var zomato = {
+        apikey: "41545c45de7c80b47f11e144fb5f64cf"
+    };
+
+    var openWeather = {
+        apikey: "8b21b42c1a896d7dc3aa6f8634683000"
+    };
+
+    function createZomatoRestaurantSearch(apiType, restaurantID) {
+        var defaultOptions = {
+            url: 'https://developers.zomato.com/api/v2.1/',
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'user-key': zomato.apikey // Zomato API Key
+            },
+            json: true
+        };
+
+        var str = apiType + '?' +
+            'res_id=' + restaurantID;
+        defaultOptions.url += str;
+        return defaultOptions;
+    }
+
+    var restaurantSearch = createZomatoRestaurantSearch("restaurant", restaurantID);
+
+    const firstRoundOptions= [
+        restaurantSearch
+    ];
+
+    function multipleGet(options, callback) {
+        request(options,
+            function(err, res, body) {
+                callback(err, body);
+            }
+        );
+    }
+
+    async.map(firstRoundOptions, multipleGet, function (err, res){
+        if (err) return console.log(err);
+
+        // Get Restaurant
+        var restaurant = {
+            id: res[0].id,
+            name: res[0].name,
+            url: res[0].url,
+            locationAddress: res[0].location.address,
+            locationLocality: res[0].location.locality,
+            locationCity: res[0].location.city,
+            locationCityID: res[0].location.city_id,
+            locationLatitude: res[0].location.latitude,
+            locationLongitude: res[0].location.longitude,
+            locationZipCode: res[0].location.zipcode,
+            locationCountryID: res[0].location.country_id,
+            locationLocalityVerbose: res[0].location.locality_verbose,
+            cuisine: res[0].cuisines,
+            cost: res[0].average_cost_for_two,
+            priceRange: res[0].price_range,
+            currency: res[0].currency,
+            thumbnail: res[0].thumb,
+            userRatingAggregate: res[0].user_rating.aggregate_rating,
+            userRatingText: res[0].user_rating.rating_text,
+            userRatingColor: res[0].user_rating.rating_color,
+            userRatingVotes: res[0].user_rating.votes,
+            photoUrl: res[0].photos_url,
+            menuUrl: res[0].menu_url,
+            featuredImage: res[0].featured_image,
+            delivery: res[0].has_online_delivery,
+            booking: res[0].has_table_booking,
+            bookingUrl: "",
+            eventsUrl: res[0].events_url
+        };
+
+        if(res[0].has_online_delivery === 1){
+            restaurant.delivery = "Yes";
+        } else {
+            restaurant.delivery = "No";
+        }
+        if(res[0].has_table_booking === 1){
+            restaurant.booking = "Yes";
+            restaurant.bookingUrl = res[0].book_url;
+        } else {
+            restaurant.booking = "No";
+            restaurant.bookingUrl = "No Booking Available";
+        }
+
+        console.log(restaurant);
+        clientRes.send(restaurant);
+    });
+});
+
 // GET info page
 router.get('/:id', function (clientReq, clientRes) {
     restaurantID = clientReq.params.id;
+    console.log("Get restaurant details");
     console.log(restaurantID);
 
     // /info/16590792
@@ -250,6 +350,7 @@ router.get('/:id', function (clientReq, clientRes) {
         });
     });
 });
+
 
 
 
