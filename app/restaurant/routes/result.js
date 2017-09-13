@@ -568,6 +568,18 @@ router.get('/back', function (clientReq, clientRes) {
         };
         console.log(location);
 
+        // Get Entity
+        var entityObject = {
+            entity: entity,
+            entityID: entityID,
+            entityLat: entityLat,
+            entityLon: entityLon,
+            category: category,
+            cuisine: cuisine,
+            establishment: establishment,
+        };
+        console.log(entity);
+
         // Get restaurants
         for (var i = repetitiveSearchCountStart; i < repetitiveSearchCountEnd; i++){
             for (var j = 0; j < res[i].restaurants.length; j++){
@@ -606,6 +618,9 @@ router.get('/back', function (clientReq, clientRes) {
         }
 
         clientRes.render('result', {
+            // Entity Info
+            entity: entityObject,
+
             // Weather Info
             weather: weather,
 

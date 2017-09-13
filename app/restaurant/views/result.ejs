@@ -47,13 +47,13 @@
             <div class="col-lg-8 mx-auto">
                 <div class="container text-center">
                     <h5>Search result list: <%= restaurantID.length%> restaurants and food stalls in <%= weather.location %></h5>
-                    <input class="form-control"  id="hiddenSelectedCity" name="hiddenSelectedCity" placeholder="City Selected" value="<%= entity.entity %>" readonly/>
-                    <input class="form-control"  id="hiddenSelectedCityID" name="hiddenSelectedCityID" placeholder="CityID Selected" value="<%= entity.entityID %>" readonly/>
-                    <input class="form-control"  id="hiddenSelectedCityLat" name="hiddenSelectedCityLat" placeholder="CityLat Selected" value="<%= entity.entityLat %>" readonly/>
-                    <input class="form-control"  id="hiddenSelectedCityLon" name="hiddenSelectedCityLon" placeholder="CityLon Selected" value="<%= entity.entityLon %>" readonly/>
-                    <input class="form-control"  id="hiddenSelectedCategory" name="hiddenSelectedCategory" placeholder="Category Selected" value="<%= entity.category %>" readonly/>
-                    <input class="form-control"  id="hiddenSelectedCuisine" name="hiddenSelectedCuisine" placeholder="Cuisine Selected" value="<%= entity.cuisine %>" readonly/>
-                    <input class="form-control"  id="hiddenSelectedEstablishments" name="hiddenSelectedEstablishments" placeholder="Establishment Selected" value="<%= entity.establishment %>" readonly/>
+                    <input class="form-control" type="hidden" id="hiddenSelectedCity" name="hiddenSelectedCity" placeholder="City Selected" value="<%= entity.entity %>" readonly/>
+                    <input class="form-control" type="hidden" id="hiddenSelectedCityID" name="hiddenSelectedCityID" placeholder="CityID Selected" value="<%= entity.entityID %>" readonly/>
+                    <input class="form-control" type="hidden" id="hiddenSelectedCityLat" name="hiddenSelectedCityLat" placeholder="CityLat Selected" value="<%= entity.entityLat %>" readonly/>
+                    <input class="form-control" type="hidden" id="hiddenSelectedCityLon" name="hiddenSelectedCityLon" placeholder="CityLon Selected" value="<%= entity.entityLon %>" readonly/>
+                    <input class="form-control" type="hidden" id="hiddenSelectedCategory" name="hiddenSelectedCategory" placeholder="Category Selected" value="<%= entity.category %>" readonly/>
+                    <input class="form-control" type="hidden" id="hiddenSelectedCuisine" name="hiddenSelectedCuisine" placeholder="Cuisine Selected" value="<%= entity.cuisine %>" readonly/>
+                    <input class="form-control" type="hidden" id="hiddenSelectedEstablishments" name="hiddenSelectedEstablishments" placeholder="Establishment Selected" value="<%= entity.establishment %>" readonly/>
                 </div>
             </div>
         </div>
