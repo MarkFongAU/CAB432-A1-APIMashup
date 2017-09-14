@@ -37,17 +37,14 @@
     // the option's id to be pass into the POST.
     $('#formControlSelectCategory').on('change', function () {
         var selected = $(':selected', this).prop('id');
-        console.log(selected);
         $('#hiddenSelectedCategory').val(selected);
     });
     $('#formControlSelectCuisine').on('change', function () {
         var selected = $(':selected', this).prop('id');
-        console.log(selected);
         $('#hiddenSelectedCuisine').val(selected);
     });
     $('#formControlSelectEstablishments').on('change', function () {
         var selected = $(':selected', this).prop('id');
-        console.log(selected);
         $('#hiddenSelectedEstablishments').val(selected);
     });
 
@@ -57,7 +54,6 @@
     // -> return to routes/index -> return to js/index
     $('#searchCity').on('input', function (event) {
         var input = $('#searchCity').val();
-        console.log(input);
 
         var city = "";
         var cityId = 0;
@@ -69,7 +65,7 @@
                     return this.value === input;
                 }
             }).length) {
-            console.log(cityId);
+
             // Get Zomato city parameters
             $.ajax({
                 url: '/getCity',
@@ -79,6 +75,7 @@
                 success: function (data) {
                     var allID = "0";
                     var allName = "All Options";
+
                     // Selected City
                     $('#hiddenSelectedCity').val(data.latLon[0].cityName);
                     $('#hiddenSelectedCityID').val(data.latLon[0].cityID);
@@ -109,7 +106,7 @@
                         $('#formControlSelectEstablishments').append("<option id='" + data.establishments[i].id + "' value='" + data.establishments[i].name + "'>" + data.establishments[i].name + "</option>");
                     }
 
-                    // Initialise the All options into the hiddeninputs
+                    // Initialise the All options into the hidden inputs
                     $('#hiddenSelectedCategory').val(allID);
                     $('#hiddenSelectedCuisine').val(allID);
                     $('#hiddenSelectedEstablishments').val(allID);
@@ -142,7 +139,6 @@
                     for (var i = 0; i < data.length; i++) {
                         // Drop down List
                         $('#cityNames').append("<option id='" + data[i].id + "' value='" + data[i].name + "'>");
-                        // console.log(data[i].id, data[i].name);
                     }
                 }
                 , error: function (jqXHR, textStatus, err) {

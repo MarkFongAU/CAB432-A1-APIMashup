@@ -21,14 +21,11 @@ section {
 /* Restaurant section */
 div.card {
     margin-bottom: 10px;
-    /*padding: 0;*/
 }
 
 div.card .card-body {
-    /*padding: 0;*/
     padding-top: 0;
     padding-bottom: 0;
-    /*margin-bottom: 0;*/
 }
 
 div.card .card-body .card-title {
@@ -36,7 +33,6 @@ div.card .card-body .card-title {
 }
 
 div.card a img {
-    /*float: left;*/
     height: 100px;
     width: 100%;
 }
@@ -64,23 +60,6 @@ div.card a img {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-/*#origin-input,*/
-/*#destination-input {*/
-    /*background-color: #fff;*/
-    /*font-family: Roboto;*/
-    /*font-size: 15px;*/
-    /*font-weight: 300;*/
-    /*margin-left: 12px;*/
-    /*padding: 0 11px 0 13px;*/
-    /*text-overflow: ellipsis;*/
-    /*width: 150px;*/
-/*}*/
-
-/*#origin-input:focus,*/
-/*#destination-input:focus {*/
-    /*border-color: #4d90fe;*/
-/*}*/
-
 #mode-selector {
     color: #fff;
     background-color: #4d90fe;
@@ -89,7 +68,6 @@ div.card a img {
 }
 
 #mode-selector label {
-    /*font-family: Roboto;*/
     font-size: 12px;
     font-weight: 300;
 }

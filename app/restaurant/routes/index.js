@@ -2,13 +2,12 @@ const express = require('express');
 const https = require('https');
 const async = require('async');
 const request = require('request');
-//var axios = require('axios');
 const viewsPath = __dirname + '/views/';
 var router = express.Router();
 
 // Router
 router.use(function (req, res, next) {
-    console.log("index page: /" + req.method);
+    console.log("Index page: /" + req.method);
     next();
 });
 
@@ -24,10 +23,8 @@ router.get('/', function (req, res) {
 
 // GET city parameters dynamically
 router.get('/searchCity', function (clientReq, clientRes) {
-    // console.log(clientReq.url);
-    // console.log(clientReq.path);
-    // console.log(clientReq.query);
-    console.log(clientReq.query.city);
+    console.log("Input:" + clientReq.query.city);
+
     var cities = [];
 
     var zomato = {
@@ -55,9 +52,6 @@ router.get('/searchCity', function (clientReq, clientRes) {
     var options = createZomatoCityOptions(defaultOptions, clientReq, "cities");
 
     var zomatoReq = https.request(options, function (zomatoRes) {
-        //console.log('statusCode: ', zomatoRes.statusCode);
-        //console.log('headers: ', zomatoRes.headers);
-
         var body = [];
         zomatoRes.on('data', function (chunk) {
             body.push(chunk);
@@ -74,8 +68,7 @@ router.get('/searchCity', function (clientReq, clientRes) {
                 };
                 cities.push(jObject);
             }
-            console.log(cities);
-
+            // console.log(cities);
             clientRes.send(cities);
         });
     });
@@ -89,9 +82,6 @@ router.get('/searchCity', function (clientReq, clientRes) {
 
 // GET parameters to be displayed in the form
 router.get('/getCity', function (clientReq, clientRes) {
-    // console.log(clientReq.url);
-    // console.log(clientReq.path);
-    // console.log(clientReq.query);
     var zomato = {
         apikey: "41545c45de7c80b47f11e144fb5f64cf"
     };
@@ -184,7 +174,6 @@ router.get('/getCity', function (clientReq, clientRes) {
 
     async.map(options, multipleGet, function (err, res){
         if (err) return console.log(err);
-        // console.log(res);
 
         var responseArray = {};
         var jObject;
@@ -230,6 +219,7 @@ router.get('/getCity', function (clientReq, clientRes) {
             establishments.push(jObject);
         }
         // console.log(establishments);
+
         responseArray = {
             latLon: latLon,
             categories: categories,
@@ -243,36 +233,3 @@ router.get('/getCity', function (clientReq, clientRes) {
 });
 
 module.exports = router;
-
-///////////////////////////// OAUTH //////////////////////
-// const OAUTH_URL = 'https/https://tanda.api/authorize';
-// const APP_ID = 'ascsfvrdsvewsfesf24234';
-// const APP_SECRET = 'awdasdasdawd346467';
-// const REDIRECT_URL = 'http://localhost:3001/callback';
-//
-// /* OAUTH request */
-// router.get('/', function (req, res, next) {
-//     res.redirect(`${OAUTH_URL}?scope=me&client_id=${APP_ID}&redirect_uri=${REDIRECT_URL}&response_type=code`);
-// });
-//
-// router.get('/calback', (req, res) => {
-//     const {code} = req.query;
-//     console.log(`code is ${code}`);
-//     axios.post('https://my.tando.co/token', {
-//         code,
-//         client_id: APP_ID,
-//         client_secret: APP_SECRET,
-//         redirect_uri: REDIRECT_URL,
-//         grant_type: 'authorization_code',
-//     }).then(res => res.data.access_token)
-//         .then(token => axios.get('https://tanda.co/users/me', {
-//             headers: {
-//                 Authorization: `bearer${token}`,
-//             }
-//         })).then(res => console.log(res));
-//
-//     res.end('hello');
-// });
-///////////////////////////////////////////////////
-
-

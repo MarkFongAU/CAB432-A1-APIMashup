@@ -1,5 +1,4 @@
 const express = require('express');
-const https = require('https');
 const async = require('async');
 const request = require('request');
 const viewsPath = __dirname + '/views/';
@@ -9,30 +8,22 @@ var restaurantID;
 
 // Router
 router.use(function (req, res, next) {
-    console.log("info page: /" + req.method);
+    console.log("Info page: /" + req.method);
     next();
 });
 
 // GET back to result page
 router.get('/back', function (clientReq, clientRes) {
     clientRes.redirect('/result/back');
-    // clientRes.redirect('back');
-    // clientRes.redirect('back');
 });
 
 // GET restaurant LatLon for the map
 router.get('/getMap', function (clientReq, clientRes) {
     restaurantID = clientReq.query.restaurantID;
-    console.log("Get map details");
-    console.log(restaurantID);
+    console.log("Get map details, restaurant ID:" + restaurantID);
 
-    // /info/16590792
     var zomato = {
         apikey: "41545c45de7c80b47f11e144fb5f64cf"
-    };
-
-    var openWeather = {
-        apikey: "8b21b42c1a896d7dc3aa6f8634683000"
     };
 
     function createZomatoRestaurantSearch(apiType, restaurantID) {
@@ -114,7 +105,7 @@ router.get('/getMap', function (clientReq, clientRes) {
             restaurant.bookingUrl = "No Booking Available";
         }
 
-        console.log(restaurant);
+        // console.log(restaurant);
         clientRes.send(restaurant);
     });
 });
@@ -122,10 +113,8 @@ router.get('/getMap', function (clientReq, clientRes) {
 // GET info page
 router.get('/:id', function (clientReq, clientRes) {
     restaurantID = clientReq.params.id;
-    console.log("Get restaurant details");
-    console.log(restaurantID);
+    console.log("Get restaurant details, restaurant ID:" + restaurantID);
 
-    // /info/16590792
     var zomato = {
         apikey: "41545c45de7c80b47f11e144fb5f64cf"
     };
@@ -168,23 +157,6 @@ router.get('/:id', function (clientReq, clientRes) {
         return defaultOptions;
     }
 
-    function createZomatoRestaurantWeatherForecast(apiType, restaurantLat, restaurantLon) {
-        var defaultOptions = {
-            url: 'https://api.openweathermap.org/data/2.5/',
-            method: 'GET',
-            headers: {
-            },
-            json: true
-        };
-
-        var str = apiType + '?' +
-            '&lat=' + restaurantLat +
-            '&lon=' + restaurantLon +
-            '&appid=' + openWeather.apikey;
-        defaultOptions.url += str;
-        return defaultOptions;
-    }
-
     var restaurantSearch = createZomatoRestaurantSearch("restaurant", restaurantID);
 
     const firstRoundOptions= [
@@ -246,17 +218,12 @@ router.get('/:id', function (clientReq, clientRes) {
             restaurant.booking = "No";
             restaurant.bookingUrl = "No Booking Available";
         }
-
         console.log(restaurant);
 
         var restaurantWeatherCurrentSearch = createZomatoRestaurantWeatherCurrent("weather", res[0].location.latitude, res[0].location.longitude);
-        var restaurantWeatherForecastSearch = createZomatoRestaurantWeatherForecast("forecast", res[0].location.latitude, res[0].location.longitude);
-        // var secondRoundSearchCountStart = 0;
-        // var secondRoundSearchCountEnd = 2;
 
         const secondRoundOptions= [
-            restaurantWeatherCurrentSearch,
-            restaurantWeatherForecastSearch
+            restaurantWeatherCurrentSearch
         ];
 
         async.map(secondRoundOptions, multipleGet, function (err, res){
@@ -281,65 +248,17 @@ router.get('/:id', function (clientReq, clientRes) {
             };
             console.log(weather);
 
-            var getForecastName = [];
-            var getForecastDescription = [];
-            var getForecastIcon = [];
-            var getForecastTemperature = [];
-            var getForecastPressure = [];
-            var getForecastHumidity = [];
-            var getForecastTempMin = [];
-            var getForecastTempMax = [];
-            var getForecastWindSpeed = [];
-            var getForecastWindDegree = [];
-            var getForecastDateTime = [];
-
-            // Get restaurants
-            for (var i = 0; i < res[1].list.length; i++) {
-                getForecastName.push(res[1].list[i].weather[0].main);
-                getForecastDescription.push(res[1].list[i].weather[0].description);
-                getForecastIcon.push(weatherurl + res[1].list[i].weather[0].icon + '.png');
-                getForecastTemperature.push((res[1].list[i].main.temp - 273.15).toFixed(2));
-                getForecastPressure.push(res[1].list[i].main.pressure);
-                getForecastHumidity.push(res[1].list[i].main.humidity);
-                getForecastTempMin.push((res[1].list[i].main.temp_min - 273.15).toFixed(2));
-                getForecastTempMax.push((res[1].list[i].main.temp_max - 273.15).toFixed(2));
-                getForecastWindSpeed.push(res[1].list[i].wind.speed);
-                getForecastWindDegree.push(res[1].list[i].wind.deg);
-                getForecastDateTime.push(res[1].list[i].dt_txt);
-            }
-
-            // Get Forecast
-            var forecast = {
-                // Arrays for these
-                name: getForecastName,
-                description: getForecastDescription,
-                icon: getForecastIcon,
-                temperature: getForecastTemperature,
-                pressure: getForecastPressure,
-                humidity: getForecastHumidity,
-                temperatureMin: getForecastTempMin,
-                temperatureMax: getForecastTempMax,
-                windSpeed: getForecastWindSpeed,
-                windDegree: getForecastWindDegree,
-                dateTime: getForecastDateTime,
-                // No arrays for these
-                location: res[1].city.name + ', ' + res[1].city.country,
-                lat: res[1].city.coord.lat,
-                lon: res[1].city.coord.lon,
-            };
-            console.log(forecast);
-
             // Get Location
             var location = {
                 locationName: weather.location,
                 locationLat: restaurant.locationLatitude,
                 locationLng: restaurant.locationLongitude
             };
+            console.log(location);
 
             clientRes.render('info', {
                 // Weather Info
                 weather: weather,
-                forecast: forecast,
 
                 // Restaurant Info
                 restaurant: restaurant,
@@ -350,9 +269,5 @@ router.get('/:id', function (clientReq, clientRes) {
         });
     });
 });
-
-
-
-
 
 module.exports = router;

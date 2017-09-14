@@ -21,14 +21,11 @@ section {
 /* Restaurant section */
 div.card {
     margin-bottom: 10px;
-    /*padding: 0;*/
 }
 
 div.card .card-body {
-    /*padding: 0;*/
     padding-top: 0;
     padding-bottom: 0;
-    /*margin-bottom: 0;*/
 }
 
 div.card .card-body .card-title {
@@ -36,7 +33,6 @@ div.card .card-body .card-title {
 }
 
 div.card a img {
-    /*float: left;*/
     height: 100px;
     width: 100%;
 }
@@ -89,7 +85,6 @@ div.card a img {
 }
 
 #mode-selector label {
-    /*font-family: Roboto;*/
     font-size: 13px;
     font-weight: 300;
 }

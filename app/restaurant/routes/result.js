@@ -1,5 +1,4 @@
 const express = require('express');
-const https = require('https');
 const async = require('async');
 const request = require('request');
 const viewsPath = __dirname + '/views/';
@@ -17,7 +16,7 @@ var establishment;
 
 // Router
 router.use(function (req, res, next) {
-    console.log("result page: /" + req.method);
+    console.log("Result page: /" + req.method);
     next();
 });
 
@@ -32,7 +31,7 @@ router.post('/', function (clientReq, clientRes) {
     category = clientReq.body.hiddenSelectedCategory;
     cuisine = clientReq.body.hiddenSelectedCuisine;
     establishment = clientReq.body.hiddenSelectedEstablishments;
-    console.log(entity, entityID, entityType, entityLat, entityLon, radius, category, cuisine, establishment);
+    console.log("Selected query: ",entity, entityID, entityType, entityLat, entityLon, radius, category, cuisine, establishment);
 
     var zomato = {
         apikey: "41545c45de7c80b47f11e144fb5f64cf"
@@ -251,8 +250,6 @@ router.post('/', function (clientReq, clientRes) {
             restaurantEstablishmentName: getRestaurantEstablishmentName,
         });
     });
-
-
 });
 
 // GET restaurant LatLon for the map
@@ -266,15 +263,10 @@ router.get('/getMap', function (clientReq, clientRes) {
     category = clientReq.query.category;
     cuisine = clientReq.query.cuisine;
     establishment = clientReq.query.establishment;
-    console.log("Get map details");
-    console.log(entity, entityID, entityType, entityLat, entityLon, radius, category, cuisine, establishment);
+    console.log("Get map details: ", entity, entityID, entityType, entityLat, entityLon, radius, category, cuisine, establishment);
 
     var zomato = {
         apikey: "41545c45de7c80b47f11e144fb5f64cf"
-    };
-
-    var openWeather = {
-        apikey: "8b21b42c1a896d7dc3aa6f8634683000"
     };
 
     function createZomatoCitySearch(apiType, entityID, entityType, offset, radius, category, cuisine, establishment) {
@@ -438,7 +430,7 @@ router.get('/getMap', function (clientReq, clientRes) {
 });
 
 router.get('/back', function (clientReq, clientRes) {
-    console.log(entity, entityID, entityType, entityLat, entityLon, radius, category, cuisine, establishment);
+    console.log("Selected query: ", entity, entityID, entityType, entityLat, entityLon, radius, category, cuisine, establishment);
     var zomato = {
         apikey: "41545c45de7c80b47f11e144fb5f64cf"
     };

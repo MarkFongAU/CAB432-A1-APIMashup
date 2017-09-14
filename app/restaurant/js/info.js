@@ -51,12 +51,10 @@ function initMap() {
         success: function (restaurant) {
             var lat = parseFloat(restaurant.locationLatitude);
             var lng = parseFloat(restaurant.locationLongitude);
-            console.log("Restaurant LatLon: ", lat, lng);
 
             map = new google.maps.Map(document.getElementById('map'), {
                 mapTypeControl: true,
                 center: {lat: lat, lng: lng},
-                // center: {lat: -34.397, lng: 150.644},
                 zoom: 13
             });
             currentInfoWindow = new google.maps.InfoWindow;
@@ -77,7 +75,6 @@ function initMap() {
                         map: map,
                         title: 'You'
                     });
-                    console.log("Current Location: ", currentLocation.position.lat(), currentLocation.position.lng());
 
                     // Place Autocomplete and Directions
                     new AutocompleteDirectionsHandler(map);
@@ -157,8 +154,6 @@ function setMarkers(map, restaurant) {
         });
         restaurantLocation = marker;
 
-        console.log("Restaurant location", restaurantLocation.position.lat(), restaurantLocation.position.lng());
-
         restaurantInfoWindow.open(map, marker);
 
         google.maps.event.addListener(marker, 'click', (function (marker, restaurantInfoWindow) {
@@ -198,7 +193,6 @@ function AutocompleteDirectionsHandler(map) {
 
     this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(modeSelector);
     this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(offRestaurantDirection);
-
 }
 
 // Sets a listener on a radio button to change the filter type on Places
@@ -237,7 +231,6 @@ AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function (au
         }
         me.route();
     });
-
 };
 
 AutocompleteDirectionsHandler.prototype.route = function () {

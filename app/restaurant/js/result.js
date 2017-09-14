@@ -49,7 +49,6 @@ function initMap() {
     var category = $('#hiddenSelectedCategory').val();
     var cuisine = $('#hiddenSelectedCuisine').val();
     var establishment = $('#hiddenSelectedEstablishments').val();
-    console.log(entity, entityID, entityLat, entityLon, category, cuisine, establishment);
 
     $.ajax({
         url: '/result/getMap',
@@ -71,7 +70,6 @@ function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
                 mapTypeControl: true,
                 center: {lat: lat, lng: lng},
-                // center: {lat: -34.397, lng: 150.644},
                 zoom: 13
             });
             currentInfoWindow = new google.maps.InfoWindow;
