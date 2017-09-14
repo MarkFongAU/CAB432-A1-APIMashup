@@ -35,30 +35,3 @@ app.use('*',function(req,res){ // Otherwise return 404 page
 app.listen(port, function () {
     console.log(`Express app listening at http://${hostname}:${port}/`);
 });
-
-/////////////////////////////////////////
-// const express = require('express');
-// const myrouter = require('./my-router');
-//
-// app.use('*',function(req,res){
-//     res.
-//     res.sendFile(viewsPath + "404.html");
-//     res.send({ temp:"sdsd"});
-//
-// });
-//
-//// app.use('/dogssss', myrouter);
-//
-//
-//
-// // in another file (my-router.js)
-// const router = express.Router();
-//
-// // gets hist by /users
-// router get('/', function(){
-//
-// });
-//
-// router get('/dogs', function(){
-//
-// });
