@@ -1,5 +1,4 @@
 const express = require('express');
-const https = require('https');
 const async = require('async');
 const request = require('request');
 const viewsPath = __dirname + '/views/';
@@ -21,59 +20,56 @@ router.get('/', function (req, res) {
 router.get('/searchCity', function (clientReq, clientRes) {
     console.log("Input:" + clientReq.query.city);
 
-    var cities = [];
-
     var zomato = {
         apikey: "41545c45de7c80b47f11e144fb5f64cf"
     };
 
-    var defaultOptions = {
-        hostname: 'developers.zomato.com',
-        port: 443,
-        path: '/api/v2.1/',
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'user-key': zomato.apikey // Zomato API Key
-        }
-    };
+    function createZomatoCityOptions(clientReq, apiType) {
+        var defaultOptions = {
+            url: 'https://developers.zomato.com/api/v2.1/',
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'user-key': zomato.apikey // Zomato API Key
+            },
+            json: true
+        };
 
-    function createZomatoCityOptions(defaultOptions, clientReq, apiType) {
         var str = apiType + '?' +
             'q=' + clientReq.query.city;
-        defaultOptions.path += str;
+        defaultOptions.url += str;
         return defaultOptions;
     }
 
-    var options = createZomatoCityOptions(defaultOptions, clientReq, "cities");
+    var cityOptions = createZomatoCityOptions(clientReq, "cities");
 
-    var zomatoReq = https.request(options, function (zomatoRes) {
-        var body = [];
-        zomatoRes.on('data', function (chunk) {
-            body.push(chunk);
-        });
-        zomatoRes.on('end', function () {
-            var bodyString = body.join('');
-            var rsp = JSON.parse(bodyString);
+    const options= [
+        cityOptions
+    ];
 
-            // Process the response of cities into a city array
-            for (var eachIndex in rsp.location_suggestions) {
-                var jObject = {
-                    id: rsp.location_suggestions[eachIndex].id,
-                    name: rsp.location_suggestions[eachIndex].name
-                };
-                cities.push(jObject);
+    function multipleGet(options, callback) {
+        request(options,
+            function(err, res, body) {
+                callback(err, body);
             }
-            // console.log(cities);
-            clientRes.send(cities);
-        });
-    });
+        );
+    }
 
-    zomatoReq.on('error', (e) => {
-        console.error(e);
-    });
+    async.map(options, multipleGet, function (err, res) {
+        if (err) return console.log(err);
 
-    zomatoReq.end();
+        var jObject;
+
+        var cities = [];
+        for (var locationIndex in res[0].location_suggestions){
+            jObject = {
+                id: res[0].location_suggestions[locationIndex].id,
+                name: res[0].location_suggestions[locationIndex].name
+            };
+            cities.push(jObject);
+        }
+        clientRes.send(cities);
+    });
 });
 
 // GET parameters to be displayed in the form
