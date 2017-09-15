@@ -116,7 +116,7 @@ function setMarkers(map, restaurant) {
     // Origins, anchor positions and coordinates of the marker increase in the X
     // direction to the right and in the Y direction down.
     var image = {
-        url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+        url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
         // This marker is 32 pixels wide by 32 pixels high.
         size: new google.maps.Size(32, 32),
         // The origin for this image is (0, 0).

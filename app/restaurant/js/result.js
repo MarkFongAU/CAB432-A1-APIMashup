@@ -130,7 +130,7 @@ function setMarkers(map, restaurantArray) {
     // Origins, anchor positions and coordinates of the marker increase in the X
     // direction to the right and in the Y direction down.
     var image = {
-        url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+        url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
         // This marker is 32 pixels wide by 32 pixels high.
         size: new google.maps.Size(32, 32),
         // The origin for this image is (0, 0).
@@ -149,7 +149,7 @@ function setMarkers(map, restaurantArray) {
     if (restaurantArray.restaurantID) {
         for (var i = 0; i < restaurantArray.restaurantID.length; i++) {
 
-            var contentString = '<a href="/info/' + restaurantArray.restaurantID[i] + '"><img src="' + restaurantArray.restaurantThumbnail[i] + '" alt="No restaurant Image" style="height: 100px; width: 200px" onerror="this.onerror=null;this.src=\'http://placehold.it/250x100?text=No Image\';"></a>' +
+            var contentString = '<a href="/info/' + restaurantArray.restaurantID[i] + '"><img src="' + restaurantArray.restaurantThumbnail[i] + '" alt="No restaurant Image" style="height: 100px; width: 200px" onerror="this.onerror=null;this.src=\'https://placehold.it/250x100?text=No Image\';"></a>' +
                 '<br/>' + '<b><a href="/info/' + restaurantArray.restaurantID[i] + '">' + restaurantArray.restaurantName[i] + '</a></b>' +
                 '<br/>' + '<b class="text-muted">' + restaurantArray.restaurantCuisine[i] + '</b>' +
                 '<br/>' + restaurantArray.restaurantLocationLocality[i];

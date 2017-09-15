@@ -230,7 +230,7 @@ router.get('/:id', function (clientReq, clientRes) {
             if (err) return console.log(err);
 
             // Get Weather
-            var weatherurl = 'http://openweathermap.org/img/w/'; //http://openweathermap.org/img/w/10d.png
+            var weatherurl = 'https://openweathermap.org/img/w/'; //http://openweathermap.org/img/w/10d.png
             var weather = {
                 name: res[0].weather[0].main,
                 description: res[0].weather[0].description,
